@@ -26,8 +26,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define MASTER_RIGHT
 // #define EE_HANDS
 
-#define QUICK_TAP_TERM 0
-#define TAPPING_TERM 100
+// #define _OLED_FONT_SCALE 2
+// #define OLED_FONT_WIDTH 6
+// #define OLED_FONT_HEIGHT 8
+
+// #define QUICK_TAP_TERM 0
+#define TAPPING_TERM 150
+#define PERMISSIVE_HOLD
+// #define HOLD_ON_OTHER_KEY_PRESS
+
 
 #undef RGBLIGHT_LED_COUNT
 #define RGBLIGHT_EFFECT_BREATHING
