@@ -11,6 +11,7 @@
     },
     "files.associations": {
         "*.isf": "glsl",
+        "*.sql": "postgres",
         "*.h": "c",
         "*.c": "c",
         "*.inc": "c",
@@ -37,7 +38,8 @@
         "string_view": "c",
         "unordered_map": "c",
         "unordered_set": "c",
-        "vector": "c"
+        "vector": "c",
+        "__bit_reference": "c"
     },
     "[markdown]": {
         "editor.trimAutoWhitespace": false,

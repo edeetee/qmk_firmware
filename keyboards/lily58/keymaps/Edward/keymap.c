@@ -54,6 +54,17 @@ const char *layer_state_vert_combo(void) {
 
     return layer_state_vert_combo_str;
 }
+bool led_update_user(led_t led_state) {
+#    ifdef AUDIO_ENABLE
+    static uint8_t caps_state     = 0;
+    layer_state_vert_combo_str[4] = is_caps_word_on() ? 'S' : ' ';
+    if (caps_state != led_state.caps_lock) {
+        led_state.caps_lock ? PLAY_SONG(caps_on) : PLAY_SONG(caps_off);
+        caps_state = led_state.caps_lock;
+    }
+#    endif
+    return true;
+}
 
 // When you add source files to SRC in rules.mk, you can use functions.
 // const char *read_layer_state(void);
@@ -154,7 +165,7 @@ void oled_write_layer_state(void) {
     // }
 
     // oled_set_cursor(0, 0);
-    write_modulo(LEN_VERT_COMBO * 12, layer_state_vert_combo(), LEN_VERT_COMBO);
+    write_modulo(LEN_VERT_COMBO * 10, layer_state_vert_combo(), LEN_VERT_COMBO);
 
     // oled_set_cursor(0, 9)trarstrfwfwqwffpwqwfpazxcdneioly;luy;jluy;
 
