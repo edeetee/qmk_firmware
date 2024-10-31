@@ -1,0 +1,1 @@
+qmk json2c lily_edward_keymap.json > keyboards/lily58/keymaps/Edward/jsonmap.c

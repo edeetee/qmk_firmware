@@ -35,6 +35,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define PERMISSIVE_HOLD
 // #define HOLD_ON_OTHER_KEY_PRESS
 
+// #define EXTRAKEY_ENABLE
+
+#define TAPPING_TOGGLE 2
+
+#define ONESHOT_TAP_TOGGLE 2 /* Tapping this number of times holds the key until tapped once again. */
+#define ONESHOT_TIMEOUT 2000 /* Time (in ms) before the one shot key is released */
+
+#define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
+
 #undef RGBLIGHT_LED_COUNT
 #define RGBLIGHT_EFFECT_BREATHING
 #define RGBLIGHT_EFFECT_RAINBOW_MOOD

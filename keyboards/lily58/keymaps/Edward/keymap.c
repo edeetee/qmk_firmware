@@ -1,12 +1,14 @@
 #include QMK_KEYBOARD_H
 
 enum layer_number {
-    _QWERTY = 0,
-    _EXTRAS = 1,
+    _COLEMAK = 0,
+    _QWERTY  = 1,
+    _EXTRAS  = 2,
 };
 
-const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
-    {[0] = LAYOUT(KC_ESC, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC, KC_GRV, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL, KC_TAB, LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), KC_G, KC_H, LSFT_T(KC_J), LGUI_T(KC_K), LALT_T(KC_L), LCTL_T(KC_SCLN), KC_QUOT, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_LBRC, KC_RBRC, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_ENT, LSFT_T(KC_CAPS), KC_LCTL, KC_LALT, LGUI_T(KC_SPC), LSFT_T(KC_SPC), MO(1), KC_MINS, KC_EQL), [1] = LAYOUT(KC_TRNS, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_TRNS, KC_TRNS, KC_1, KC_2, KC_3, KC_TRNS, KC_END, KC_PGDN, KC_PGUP, KC_HOME, KC_TRNS, KC_F12, KC_TRNS, KC_TRNS, KC_4, KC_5, KC_6, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_7, KC_8, KC_9, KC_0, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS)};
+// const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS];
+
+#include "jsonmap.c"
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
@@ -39,6 +41,18 @@ const char *read_layer_state_vert(void) {
     }
 
     return layer_state_vert_str;
+}
+
+#    define LEN_VERT_COMBO 4
+char layer_state_vert_combo_str[LEN_VERT_COMBO];
+
+const char *layer_state_vert_combo(void) {
+    layer_state_vert_combo_str[0] = layer_state_is(_COLEMAK) || true ? 'C' : ' ';
+    layer_state_vert_combo_str[1] = layer_state_is(_QWERTY) ? 'Q' : ' ';
+    layer_state_vert_combo_str[2] = layer_state_is(_EXTRAS) ? 'X' : ' ';
+    layer_state_vert_combo_str[3] = is_caps_word_on() ? 'S' : ' ';
+
+    return layer_state_vert_combo_str;
 }
 
 // When you add source files to SRC in rules.mk, you can use functions.
@@ -77,6 +91,18 @@ void write_keylog_vert(void) {
     }
 }
 
+uint8_t oled_rotation_width;
+
+void write_modulo(int chars, const char *text, int strlen) {
+    // int chars = lines * oled_rotation_width;
+
+    for (int x = 0; x < chars; x++) {
+        int line = x / oled_rotation_width / OLED_FONT_WIDTH;
+        int i    = (line % 2 == 0 ? x : oled_rotation_width - (x % oled_rotation_width)) % strlen;
+        oled_write_char(text[i], false);
+    }
+}
+
 void draw_stripe(int size, int thickness, bool flip, bool color) {
     for (int x = 0; x < size; x++) {
         for (int y = x - thickness; y < x + thickness; y++) {
@@ -99,33 +125,41 @@ bool stripe(int x, int y, int thickness) {
 bool animated_hash(int x, int y);
 
 void oled_write_layer_state(void) {
-    int random_pixels = 10;
+    // int random_pixels = 10;
     // oled_clear();
-    for (int i = 0; i < random_pixels; i++) {
-        int x = rand() % 32;
-        int y = rand() % 64;
+    // int layer = get_highest_layer(layer_state);
+    // for (int i = 0; i < random_pixels; i++) {
+    //     int x = rand() % 32;
+    //     int y = rand() % 64;
 
-        bool color = false;
+    //     bool color = false;
 
-        switch (layer_state) {
-            case 0:
-                color |= animated_hash(x, y);
-                break;
-            case 2:
-                color |= stripe(x, y, 2);
-                color |= stripe(32 - x, y, 2);
-                break;
-        }
+    //     switch (layer) {
+    //         case _COLEMAK:
+    //             color |= animated_hash(x, y);
+    //             break;
+    //         case _QWERTY:
+    //             color |= stripe(x, y, 1);
+    //             color |= stripe(8 - x, y, 2);
+    //             break;
+    //         case _EXTRAS:
+    //             color |= stripe(x, y, 5);
+    //             color |= stripe(32 - x, y, 2);
+    //             break;
+    //     }
 
-        // color &= rand() < RAND_MAX * 0.5;
+    //     // color &= rand() < RAND_MAX * 0.5;
 
-        oled_write_pixel(x, y, color);
-    }
+    //     oled_write_pixel(x, y, color);
+    // }
 
-    oled_set_cursor(0, 9);
+    // oled_set_cursor(0, 0);
+    write_modulo(LEN_VERT_COMBO * 12, layer_state_vert_combo(), LEN_VERT_COMBO);
 
-    snprintf(layer_state_vert_str, sizeof(layer_state_vert_str), "%u", layer_state);
-    oled_write_ln(layer_state_vert_str, false);
+    // oled_set_cursor(0, 9)trarstrfwfwqwffpwqwfpazxcdneioly;luy;jluy;
+
+    // oled_write_ln(layer_state_vert_combo(), false);
+
     oled_advance_page(true);
 }
 
