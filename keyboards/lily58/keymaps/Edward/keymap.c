@@ -220,5 +220,59 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
         // set_timelog();
     }
+    switch (keycode) {
+        case LT(0, KC_X):
+            if (!record->tap.count && record->event.pressed) {
+                tap_code16(G(KC_X)); // Intercept hold function to send Ctrl-X
+                return false;
+            }
+            return true; // Return true for normal processing of tap keycode
+        case LT(0, KC_C):
+            if (!record->tap.count && record->event.pressed) {
+                tap_code16(G(KC_C)); // Intercept hold function to send Ctrl-C
+                return false;
+            }
+            return true; // Return true for normal processing of tap keycode
+        case LT(0, KC_Z):
+            if (!record->tap.count && record->event.pressed) {
+                tap_code16(G(KC_Z)); // Intercept hold function to send Ctrl-C
+                return false;
+            }
+            return true; // Return true for normal processing of tap keycode
+        case LT(0, KC_V):
+            if (!record->tap.count && record->event.pressed) {
+                tap_code16(G(KC_V)); // Intercept hold function to send Ctrl-V
+                return false;
+            }
+            return true; // Return true for normal processing of tap keycode
+    }
     return true;
 }
+
+// void leader_end_user(void) {
+//     // uint16_t leader_sequence[5]   = {0, 0, 0, 0, 0};
+//     // uint8_t  leader_sequence_size = 0;
+
+//     // for each key in leader_sequence, extract the mod key.
+//     // if the key is not a mod key, trigger the action.
+
+//     for (int i = 0; i < leader_sequence_size; i++) {
+//         bool     is_mod = false;
+//         uint16_t key    = leader_sequence[i];
+
+//         switch (key) {
+//             case KC_LCTL:
+//                 is_mod = true;
+//                 break;
+//             case KC_LSFT:
+//                 is_mod = true;
+//                 break;
+//             case KC_LALT:
+//                 is_mod = true;
+//                 break;
+//             case KC_LGUI:
+//                 is_mod = true;
+//                 break;
+//         }
+//     }
+// }

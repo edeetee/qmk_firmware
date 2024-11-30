@@ -42,6 +42,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ONESHOT_TAP_TOGGLE 2 /* Tapping this number of times holds the key until tapped once again. */
 #define ONESHOT_TIMEOUT 2000 /* Time (in ms) before the one shot key is released */
 
+#define TAPPING_TERM 200
+
+#define LEADER_PER_KEY_TIMING
+#define LEADER_TIMEOUT 250
+#define LEADER_KEY_STRICT_KEY_PROCESSING
+
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 
 #undef RGBLIGHT_LED_COUNT

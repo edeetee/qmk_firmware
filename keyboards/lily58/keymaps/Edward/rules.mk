@@ -11,6 +11,9 @@ RGBLIGHT_ENABLE = no        # Enable WS2812 RGB underlight.
 SWAP_HANDS_ENABLE = no      # Enable one-hand typing
 OLED_ENABLE = yes           # OLED display
 SPLIT_KEYBOARD = yes        # Split keyboard
+QK_LOCK = yes
+
+LEADER_ENABLE = yes         # Leader key
 
 AUTO_SHIFT_ENABLE = yes      # Auto Shift
 CAPS_WORD_ENABLE = yes
