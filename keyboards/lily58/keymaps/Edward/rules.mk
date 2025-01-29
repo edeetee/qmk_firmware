@@ -15,7 +15,7 @@ QK_LOCK = yes
 
 LEADER_ENABLE = yes         # Leader key
 
-AUTO_SHIFT_ENABLE = yes      # Auto Shift
+# AUTO_SHIFT_ENABLE = yes      # Auto Shift
 CAPS_WORD_ENABLE = yes
 
 # If you want to change the display of OLED, you need to change here

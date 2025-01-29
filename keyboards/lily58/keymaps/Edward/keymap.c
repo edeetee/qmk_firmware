@@ -213,6 +213,18 @@ bool oled_task_user(void) {
 }
 #endif // OLED_ENABLE
 
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(0, SC_LSPO):
+        case LT(0, SC_RSPC):
+            // Immediately select the hold action when another key is pressed.
+            return true;
+        default:
+            // Do not select the hold action when another key is pressed.
+            return false;
+    }
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
 #ifdef OLED_ENABLE
